@@ -3850,6 +3850,12 @@ decon_init_done:
 
 	decon->state = DECON_STATE_INIT;
 
+    // Try to unblank decon0
+    if(decon->id == 0)
+    {
+        decon_blank(FB_BLANK_UNBLANK, fbinfo);
+    }
+
 	return 0;
 }
 
