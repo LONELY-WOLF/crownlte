@@ -1173,7 +1173,6 @@ struct eth_dev *gether_setup_name(struct usb_gadget *g,
 	spin_lock_init(&dev->lock);
 	spin_lock_init(&dev->req_lock);
 	INIT_WORK(&dev->work, eth_work);
-	INIT_WORK(&dev->rx_work, process_rx_w);
 	INIT_LIST_HEAD(&dev->tx_reqs);
 	INIT_LIST_HEAD(&dev->rx_reqs);
 
@@ -1187,18 +1186,13 @@ struct eth_dev *gether_setup_name(struct usb_gadget *g,
 	if (get_ether_addr(dev_addr, net->dev_addr))
 		dev_warn(&g->dev,
 			"using random %s ethernet address\n", "self");
-#ifdef CONFIG_USB_ANDROID_SAMSUNG_COMPOSITE
-	memcpy(dev->host_mac, ethaddr, ETH_ALEN);
-	printk(KERN_DEBUG "usb: set unique host mac\n");
-#else
-	if (get_host_ether_addr(host_ethaddr, dev->host_mac))
-		dev_warn(&g->dev, "using random %s ethernet address\n", "host");
-	else
-		dev_warn(&g->dev, "using previous %s ethernet address\n", "host");
+	if (get_ether_addr(host_addr, dev->host_mac))
+		dev_warn(&g->dev,
+			"using random %s ethernet address\n", "host");
 
 	if (ethaddr)
 		memcpy(ethaddr, dev->host_mac, ETH_ALEN);
-#endif
+
 	net->netdev_ops = &eth_netdev_ops;
 
 	net->ethtool_ops = &ops;
