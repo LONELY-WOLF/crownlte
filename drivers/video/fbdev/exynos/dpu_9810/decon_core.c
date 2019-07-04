@@ -2975,6 +2975,7 @@ int decon_release(struct fb_info *info, int user)
 	struct decon_win *win = info->par;
 	struct decon_device *decon = win->decon;
 
+    return 0;
 	decon_info("%s + : %d\n", __func__, decon->id);
 	if (decon->dt.out_type == DECON_OUT_DP)
 		dp_logger_print("decon release\n");
