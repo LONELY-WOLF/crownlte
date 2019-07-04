@@ -807,11 +807,11 @@ int decon_check_var(struct fb_var_screeninfo *var, struct fb_info *info)
 	case 24:
 		/* our 24bpp is unpacked, so 32bpp */
 		var->bits_per_pixel	= 32;
-		var->red.offset		= 0;
+		var->red.offset		= 16;
 		var->red.length		= 8;
 		var->green.offset	= 8;
 		var->green.length	= 8;
-		var->blue.offset	= 16;
+		var->blue.offset	= 0;
 		var->blue.length	= 8;
 		break;
 
@@ -945,7 +945,7 @@ int decon_pan_display(struct fb_var_screeninfo *var, struct fb_info *info)
 			break;
 		case 24:
 		case 32:
-			config.format = DECON_PIXEL_FORMAT_ABGR_8888;
+			config.format = DECON_PIXEL_FORMAT_ARGB_8888;
 			break;
 		default:
 			decon_err("%s: Not supported bpp %d\n", __func__,
